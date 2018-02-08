@@ -69,7 +69,7 @@ def handle_command(command, channel):
         response = "Sure...write some more code then I can do that!"
 
     if re.match(QUESTION_REGEX, command):
-        response = "You asked me a question?"
+        response = command
 
     # Sends the response back to the channel
     slack_client.api_call(
