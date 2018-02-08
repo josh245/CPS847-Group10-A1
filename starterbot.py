@@ -86,9 +86,9 @@ def handle_command(command, channel):
             json_response = urllib.request.urlopen(weather_request_url).read().decode('utf-8')
             weather_data = json.loads(json_response)            
             temp = weather_data['main']['temp']          
-            response = 'The temperature for ' + weather_commandList[1] + ' is ' + str(int(temp - 273.15))
+            response = 'The temperature for ' + weather_commandList[1] + ' is ' + str(int(temp - 273.15)) + ' celsius.'
         except urllib.error.HTTPError:
-            response = 'Failed to get the weather for you, try saying "Weather CityName".'
+            response = 'Failed to get the weather for you, try saying "Weather CityName" next time you message Big Bot Green.'
 
         #except ValueError:  # includes simplejson.decoder.JSONDecodeError
             #response = 'Failed'
