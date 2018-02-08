@@ -12,9 +12,12 @@ from slackclient import SlackClient
 
 import json #used for debug printing
 
+#Slack bot token
+with open ("slackAuthCode.txt", "r") as slackAuthCode:
+   SLACK_BOT_TOKEN = slackAuthCode.read()
 
 # instantiate Slack client
-slack_client = SlackClient('USER_TOKEN')
+slack_client = SlackClient(SLACK_BOT_TOKEN)
 # starterbot's user ID in Slack: value is assigned after the bot starts up
 starterbot_id = None
 
