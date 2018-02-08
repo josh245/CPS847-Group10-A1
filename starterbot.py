@@ -8,6 +8,7 @@
 import os
 import time
 import re
+import urllib.request
 from slackclient import SlackClient
 
 import json #used for debug printing
@@ -15,6 +16,10 @@ import json #used for debug printing
 #Slack bot token
 with open ("slackAuthCode.txt", "r") as slackAuthCode:
    SLACK_BOT_TOKEN = slackAuthCode.read()
+
+#Weather API token 
+with open ("weatherapiKey.txt", "r") as weatherapiKey:
+   WEATHER_API_KEY = weatherapiKey.read()   
 
 # instantiate Slack client
 slack_client = SlackClient(SLACK_BOT_TOKEN)
@@ -25,8 +30,8 @@ starterbot_id = None
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
 EXAMPLE_COMMAND = "do"
 MENTION_REGEX = "^<@(|[WU].+)>(.*)"
-
 QUESTION_REGEX = "[a-zA-Z]*.*\?+"
+WEATHER_REGEX = "weather"
 
 def parse_bot_commands(slack_events):
     """
@@ -70,6 +75,23 @@ def handle_command(command, channel):
 
     if re.match(QUESTION_REGEX, command):
         response = command
+
+    if re.search(WEATHER_REGEX, command.lower()):
+        weather_commandList = command.split()
+        try:
+            weather_request_url = 'http://api.openweathermap.org/data/2.5/weather?q=' + weather_commandList[1] + '&APPID=' + WEATHER_API_KEY
+        except StandardError:
+            response = 'Failed URL'                  
+        try:    
+            json_response = urllib.request.urlopen(weather_request_url).read().decode('utf-8')
+            weather_data = json.loads(json_response)            
+            temp = weather_data['main']['temp']          
+            response = 'The temperature for ' + weather_commandList[1] + ' is ' + str(int(temp - 273.15))
+        except urllib.error.HTTPError:
+            response = 'Failed to get the weather for you, try saying "Weather CityName".'
+
+        #except ValueError:  # includes simplejson.decoder.JSONDecodeError
+            #response = 'Failed'
 
     # Sends the response back to the channel
     slack_client.api_call(
