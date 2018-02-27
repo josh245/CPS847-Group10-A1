@@ -9,9 +9,16 @@ import os
 import time
 import re
 import urllib.request
+import pytest
 from slackclient import SlackClient
 
 import json #used for debug printing
+
+def func(x):
+    return x + 1
+
+def test_answer():
+    assert func(3) == 5
 
 #Slack bot token
 with open ("slackAuthCode.txt", "r") as slackAuthCode:
