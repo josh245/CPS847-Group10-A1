@@ -2,7 +2,5 @@ language: python
 python:
   - "3.6"
 # command to run tests
-install:
-  - pip install slackclient
 script: 
-  - python starterbot.py 
+  - python helloworld.py
