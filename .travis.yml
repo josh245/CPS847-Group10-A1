@@ -4,3 +4,10 @@ python:
 # command to run tests
 script: 
   - python helloworld.py
+deploy:
+  provider: s3
+  access_key_id: "AKIAJGVQGFE4EL6F23TQ"
+  secret_access_key: "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"
+  bucket: "cps847j2colaco"
+  skip_cleanup: true
+  acl: public_read
